@@ -37,7 +37,7 @@ MWS与SP-API的区别：
        2.所有refrences相关的api的调用测试类都在src/test/java/com/amazon/spapi/api
        3.sellersApiTest写了个测试调用类，可参考
        4.所有md文档，包括api文档及models文档都在docs文件目录下
-    
+       5.在FeedApi及reportApi中上传和下载文件的工具类在documents目录下，里面是amazon提供的java case，包含了加解密
 
 对你有用的话，请penghp喝杯咖啡吧：
     
