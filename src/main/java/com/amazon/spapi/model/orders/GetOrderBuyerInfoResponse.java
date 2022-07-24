@@ -30,7 +30,7 @@ import java.io.IOException;
  * The response schema for the getOrderBuyerInfo operation.
  */
 @ApiModel(description = "The response schema for the getOrderBuyerInfo operation.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-12-15T20:03:19.199+08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2022-07-24T10:19:26.677+08:00")
 public class GetOrderBuyerInfoResponse {
   @SerializedName("payload")
   private OrderBuyerInfo payload = null;
@@ -44,10 +44,10 @@ public class GetOrderBuyerInfoResponse {
   }
 
    /**
-   * The payload for the getOrderBuyerInfo operations.
+   * The payload for the getOrderBuyerInfo operation.
    * @return payload
   **/
-  @ApiModelProperty(value = "The payload for the getOrderBuyerInfo operations.")
+  @ApiModelProperty(value = "The payload for the getOrderBuyerInfo operation.")
   public OrderBuyerInfo getPayload() {
     return payload;
   }
@@ -76,7 +76,7 @@ public class GetOrderBuyerInfoResponse {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -109,7 +109,7 @@ public class GetOrderBuyerInfoResponse {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

@@ -984,20 +984,21 @@ public class FbaInboundApi {
                 .replaceAll("\\{" + "shipmentId" + "\\}", apiClient.escapeString(shipmentId.toString()));
 
         List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
         if (pageType != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "PageType", pageType));
+            localVarQueryParams.addAll(apiClient.parameterToPair("PageType", pageType));
         if (labelType != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "LabelType", labelType));
+            localVarQueryParams.addAll(apiClient.parameterToPair("LabelType", labelType));
         if (numberOfPackages != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "NumberOfPackages", numberOfPackages));
+            localVarQueryParams.addAll(apiClient.parameterToPair("NumberOfPackages", numberOfPackages));
         if (packageLabelsToPrint != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("csv", "PackageLabelsToPrint", packageLabelsToPrint));
+            localVarCollectionQueryParams.addAll(apiClient.parameterToPairs("csv", "PackageLabelsToPrint", packageLabelsToPrint));
         if (numberOfPallets != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "NumberOfPallets", numberOfPallets));
+            localVarQueryParams.addAll(apiClient.parameterToPair( "NumberOfPallets", numberOfPallets));
         if (pageSize != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "PageSize", pageSize));
+            localVarQueryParams.addAll(apiClient.parameterToPair( "PageSize", pageSize));
         if (pageStartIndex != null)
-            localVarQueryParams.addAll(apiClient.parameterToPairs("", "PageStartIndex", pageStartIndex));
+            localVarQueryParams.addAll(apiClient.parameterToPair( "PageStartIndex", pageStartIndex));
 
         Map<String, String> localVarHeaderParams = new HashMap<String, String>();
 
@@ -1028,7 +1029,7 @@ public class FbaInboundApi {
         }
 
         String[] localVarAuthNames = new String[] {  };
-        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
+        return apiClient.buildCall(localVarPath, "GET", localVarQueryParams,localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAuthNames, progressRequestListener);
     }
 
     /**

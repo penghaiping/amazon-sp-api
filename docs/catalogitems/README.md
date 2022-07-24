@@ -1,10 +1,10 @@
 # swagger-java-client
 
 Selling Partner API for Catalog Items
-- API version: v0
-  - Build date: 2020-12-15T20:17:36.166+08:00
+- API version: 2022-04-01
+  - Build date: 2022-07-24T09:53:49.652+08:00
 
-The Selling Partner API for Catalog Items helps you programmatically retrieve item details for items in the catalog.
+The Selling Partner API for Catalog Items provides programmatic access to information about items in the Amazon catalog.  For more information, refer to the [Catalog Items API Use Case Guide](doc:catalog-items-api-v2022-04-01-use-case-guide).
 
   For more information, please visit [https://sellercentral.amazon.com/gp/mws/contactus.html](https://sellercentral.amazon.com/gp/mws/contactus.html)
 
@@ -73,10 +73,10 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import com.amazon.spapi.catalogitems.*;
-import com.amazon.spapi.catalogitems.auth.*;
+import com.amazon.spapi.*;
+import com.amazon.spapi.auth.*;
 import com.amazon.spapi.model.catalogitems.*;
-import com.amazon.spapi.catalogitems.api.CatalogApi;
+import com.amazon.spapi.api.CatalogApi;
 
 import java.io.File;
 import java.util.*;
@@ -86,10 +86,12 @@ public class CatalogApiExample {
     public static void main(String[] args) {
         
         CatalogApi apiInstance = new CatalogApi();
-        String marketplaceId = "marketplaceId_example"; // String | A marketplace identifier. Specifies the marketplace for the item.
         String asin = "asin_example"; // String | The Amazon Standard Identification Number (ASIN) of the item.
+        List<String> marketplaceIds = Arrays.asList("ATVPDKIKX0DER"); // List<String> | A comma-delimited list of Amazon marketplace identifiers. Data sets in the response contain data only for the specified marketplaces.
+        List<String> includedData = Arrays.asList("[\"summaries\"]"); // List<String> | A comma-delimited list of data sets to include in the response. Default: `summaries`.
+        String locale = "en_US"; // String | Locale for retrieving localized summaries. Defaults to the primary locale of the marketplace.
         try {
-            GetCatalogItemResponse result = apiInstance.getCatalogItem(marketplaceId, asin);
+            Item result = apiInstance.getCatalogItem(asin, marketplaceIds, includedData, locale);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling CatalogApi#getCatalogItem");
@@ -106,42 +108,47 @@ All URIs are relative to *https://sellingpartnerapi-na.amazon.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*CatalogApi* | [**getCatalogItem**](CatalogApi.md#getCatalogItem) | **GET** /catalog/v0/items/{asin} | 
-*CatalogApi* | [**listCatalogCategories**](CatalogApi.md#listCatalogCategories) | **GET** /catalog/v0/categories | 
-*CatalogApi* | [**listCatalogItems**](CatalogApi.md#listCatalogItems) | **GET** /catalog/v0/items | 
+*CatalogApi* | [**getCatalogItem**](docs/CatalogApi.md#getCatalogItem) | **GET** /catalog/2022-04-01/items/{asin} | 
+*CatalogApi* | [**searchCatalogItems**](docs/CatalogApi.md#searchCatalogItems) | **GET** /catalog/2022-04-01/items | 
 
 
 ## Documentation for Models
 
- - [ASINIdentifier](ASINIdentifier.md)
- - [AttributeSetList](AttributeSetList.md)
- - [AttributeSetListType](AttributeSetListType.md)
- - [Categories](Categories.md)
- - [CreatorType](CreatorType.md)
- - [DecimalWithUnits](DecimalWithUnits.md)
- - [DimensionType](DimensionType.md)
- - [Error](../Error.md)
- - [ErrorList](../ErrorList.md)
- - [GetCatalogItemResponse](GetCatalogItemResponse.md)
- - [IdentifierType](IdentifierType.md)
- - [Image](Image.md)
- - [Item](Item.md)
- - [ItemList](ItemList.md)
- - [LanguageType](LanguageType.md)
- - [ListCatalogCategoriesResponse](ListCatalogCategoriesResponse.md)
- - [ListCatalogItemsResponse](ListCatalogItemsResponse.md)
- - [ListMatchingItemsResponse](ListMatchingItemsResponse.md)
- - [ListOfCategories](ListOfCategories.md)
- - [NumberOfOfferListingsList](NumberOfOfferListingsList.md)
- - [OfferListingCountType](OfferListingCountType.md)
- - [Price](Price.md)
- - [QualifiersType](QualifiersType.md)
- - [RelationshipList](RelationshipList.md)
- - [RelationshipType](RelationshipType.md)
- - [SalesRankList](SalesRankList.md)
- - [SalesRankType](SalesRankType.md)
- - [SellerSKUIdentifier](SellerSKUIdentifier.md)
- - [ShippingTimeType](ShippingTimeType.md)
+ - [BrandRefinement](docs/BrandRefinement.md)
+ - [ClassificationRefinement](docs/ClassificationRefinement.md)
+ - [Dimension](docs/Dimension.md)
+ - [Dimensions](docs/Dimensions.md)
+ - [Error](docs/Error.md)
+ - [ErrorList](docs/ErrorList.md)
+ - [Item](docs/Item.md)
+ - [ItemAttributes](docs/ItemAttributes.md)
+ - [ItemBrowseClassification](docs/ItemBrowseClassification.md)
+ - [ItemClassificationSalesRank](docs/ItemClassificationSalesRank.md)
+ - [ItemDimensions](docs/ItemDimensions.md)
+ - [ItemDimensionsByMarketplace](docs/ItemDimensionsByMarketplace.md)
+ - [ItemDisplayGroupSalesRank](docs/ItemDisplayGroupSalesRank.md)
+ - [ItemIdentifier](docs/ItemIdentifier.md)
+ - [ItemIdentifiers](docs/ItemIdentifiers.md)
+ - [ItemIdentifiersByMarketplace](docs/ItemIdentifiersByMarketplace.md)
+ - [ItemImage](docs/ItemImage.md)
+ - [ItemImages](docs/ItemImages.md)
+ - [ItemImagesByMarketplace](docs/ItemImagesByMarketplace.md)
+ - [ItemProductTypeByMarketplace](docs/ItemProductTypeByMarketplace.md)
+ - [ItemProductTypes](docs/ItemProductTypes.md)
+ - [ItemRelationship](docs/ItemRelationship.md)
+ - [ItemRelationships](docs/ItemRelationships.md)
+ - [ItemRelationshipsByMarketplace](docs/ItemRelationshipsByMarketplace.md)
+ - [ItemSalesRanks](docs/ItemSalesRanks.md)
+ - [ItemSalesRanksByMarketplace](docs/ItemSalesRanksByMarketplace.md)
+ - [ItemSearchResults](docs/ItemSearchResults.md)
+ - [ItemSummaries](docs/ItemSummaries.md)
+ - [ItemSummaryByMarketplace](docs/ItemSummaryByMarketplace.md)
+ - [ItemVariationTheme](docs/ItemVariationTheme.md)
+ - [ItemVendorDetails](docs/ItemVendorDetails.md)
+ - [ItemVendorDetailsByMarketplace](docs/ItemVendorDetailsByMarketplace.md)
+ - [ItemVendorDetailsCategory](docs/ItemVendorDetailsCategory.md)
+ - [Pagination](docs/Pagination.md)
+ - [Refinements](docs/Refinements.md)
 
 
 ## Documentation for Authorization

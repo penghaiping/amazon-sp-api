@@ -4,10 +4,16 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**identifiers** | [**IdentifierType**](IdentifierType.md) | The identifiers that uniquely identify the item. | 
-**attributeSets** | [**AttributeSetList**](AttributeSetList.md) | A list of attributes of the item. |  [optional]
-**relationships** | [**RelationshipList**](RelationshipList.md) | A list of variation relationship information for the item. |  [optional]
-**salesRankings** | [**SalesRankList**](SalesRankList.md) | A list of sales rank information for the item by category. |  [optional]
+**asin** | **String** |  | 
+**attributes** | [**ItemAttributes**](ItemAttributes.md) |  |  [optional]
+**dimensions** | [**ItemDimensions**](ItemDimensions.md) |  |  [optional]
+**identifiers** | [**ItemIdentifiers**](ItemIdentifiers.md) |  |  [optional]
+**images** | [**ItemImages**](ItemImages.md) |  |  [optional]
+**productTypes** | [**ItemProductTypes**](ItemProductTypes.md) |  |  [optional]
+**relationships** | [**ItemRelationships**](ItemRelationships.md) |  |  [optional]
+**salesRanks** | [**ItemSalesRanks**](ItemSalesRanks.md) |  |  [optional]
+**summaries** | [**ItemSummaries**](ItemSummaries.md) |  |  [optional]
+**vendorDetails** | [**ItemVendorDetails**](ItemVendorDetails.md) |  |  [optional]
 
 
 

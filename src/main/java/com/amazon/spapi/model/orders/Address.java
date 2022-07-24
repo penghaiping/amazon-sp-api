@@ -28,7 +28,7 @@ import java.io.IOException;
  * The shipping address for the order.
  */
 @ApiModel(description = "The shipping address for the order.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-12-15T20:03:19.199+08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2022-07-24T10:19:26.677+08:00")
 public class Address {
   @SerializedName("Name")
   private String name = null;
@@ -352,7 +352,7 @@ public class Address {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -407,7 +407,7 @@ public class Address {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

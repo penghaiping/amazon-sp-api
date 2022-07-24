@@ -16,6 +16,7 @@ package com.amazon.spapi.api;
 import com.amazon.spapi.SellingPartnerAPIAA.AWSAuthenticationCredentials;
 import com.amazon.spapi.SellingPartnerAPIAA.AWSAuthenticationCredentialsProvider;
 import com.amazon.spapi.SellingPartnerAPIAA.LWAAuthorizationCredentials;
+import com.amazon.spapi.SellingPartnerAPIAA.RateLimitConfiguration;
 import com.amazon.spapi.client.ApiException;
 import com.amazon.spapi.model.sellers.GetMarketplaceParticipationsResponse;
 import org.junit.Test;
@@ -62,10 +63,22 @@ public class SellersApiTest {
                 .refreshToken("Atzr|ZLo8hjtuBrYlgBh0Sd6QAfhsafsafskf98fsafhjsafhasjfhasjfhsafsafskf98fsafhjsafhasjfhasj")
                 .endpoint("https://api.amazon.com/auth/o2/token")
                 .build();
+        RateLimitConfiguration rateLimitConfiguration=new RateLimitConfiguration() {
+            @Override
+            public Double getRateLimitPermit() {
+                return null;
+            }
+
+            @Override
+            public Long getTimeOut() {
+                return null;
+            }
+        };
         SellersApi sellersApi = new SellersApi.Builder()
                 .awsAuthenticationCredentials(awsAuthenticationCredentials)
                 .lwaAuthorizationCredentials(lwaAuthorizationCredentials)
                 .awsAuthenticationCredentialsProvider(awsAuthenticationCredentialsProvider)
+                .rateLimitConfigurationOnRequests(rateLimitConfiguration)
                 .endpoint("https://sellingpartnerapi-na.amazon.com")
                 .build();
 

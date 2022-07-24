@@ -1,8 +1,8 @@
 # swagger-java-client
 
 Selling Partner API for Feeds
-- API version: 2020-09-04
-  - Build date: 2020-12-15T20:33:48.553+08:00
+- API version: 2021-06-30
+  - Build date: 2022-07-23T17:46:33.654+08:00
 
 The Selling Partner API for Feeds lets you upload data to Amazon on behalf of a selling partner.
 
@@ -73,10 +73,10 @@ Please follow the [installation](#installation) instruction and execute the foll
 
 ```java
 
-import com.amazon.spapi.feeds.*;
-import com.amazon.spapi.feeds.auth.*;
+import com.amazon.spapi.*;
+import com.amazon.spapi.auth.*;
 import com.amazon.spapi.model.feeds.*;
-import com.amazon.spapi.feeds.api.FeedsApi;
+import com.amazon.spapi.api.FeedsApi;
 
 import java.io.File;
 import java.util.*;
@@ -88,8 +88,7 @@ public class FeedsApiExample {
         FeedsApi apiInstance = new FeedsApi();
         String feedId = "feedId_example"; // String | The identifier for the feed. This identifier is unique only in combination with a seller ID.
         try {
-            CancelFeedResponse result = apiInstance.cancelFeed(feedId);
-            System.out.println(result);
+            apiInstance.cancelFeed(feedId);
         } catch (ApiException e) {
             System.err.println("Exception when calling FeedsApi#cancelFeed");
             e.printStackTrace();
@@ -105,33 +104,27 @@ All URIs are relative to *https://sellingpartnerapi-na.amazon.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*FeedsApi* | [**cancelFeed**](FeedsApi.md#cancelFeed) | **DELETE** /feeds/2020-09-04/feeds/{feedId} | 
-*FeedsApi* | [**createFeed**](FeedsApi.md#createFeed) | **POST** /feeds/2020-09-04/feeds | 
-*FeedsApi* | [**createFeedDocument**](FeedsApi.md#createFeedDocument) | **POST** /feeds/2020-09-04/documents | 
-*FeedsApi* | [**getFeed**](FeedsApi.md#getFeed) | **GET** /feeds/2020-09-04/feeds/{feedId} | 
-*FeedsApi* | [**getFeedDocument**](FeedsApi.md#getFeedDocument) | **GET** /feeds/2020-09-04/documents/{feedDocumentId} | 
-*FeedsApi* | [**getFeeds**](FeedsApi.md#getFeeds) | **GET** /feeds/2020-09-04/feeds | 
+*FeedsApi* | [**cancelFeed**](docs/FeedsApi.md#cancelFeed) | **DELETE** /feeds/2021-06-30/feeds/{feedId} | 
+*FeedsApi* | [**createFeed**](docs/FeedsApi.md#createFeed) | **POST** /feeds/2021-06-30/feeds | 
+*FeedsApi* | [**createFeedDocument**](docs/FeedsApi.md#createFeedDocument) | **POST** /feeds/2021-06-30/documents | 
+*FeedsApi* | [**getFeed**](docs/FeedsApi.md#getFeed) | **GET** /feeds/2021-06-30/feeds/{feedId} | 
+*FeedsApi* | [**getFeedDocument**](docs/FeedsApi.md#getFeedDocument) | **GET** /feeds/2021-06-30/documents/{feedDocumentId} | 
+*FeedsApi* | [**getFeeds**](docs/FeedsApi.md#getFeeds) | **GET** /feeds/2021-06-30/feeds | 
 
 
 ## Documentation for Models
 
- - [CancelFeedResponse](CancelFeedResponse.md)
- - [CreateFeedDocumentResponse](CreateFeedDocumentResponse.md)
- - [CreateFeedDocumentResult](CreateFeedDocumentResult.md)
- - [CreateFeedDocumentSpecification](CreateFeedDocumentSpecification.md)
- - [CreateFeedResponse](CreateFeedResponse.md)
- - [CreateFeedResult](CreateFeedResult.md)
- - [CreateFeedSpecification](CreateFeedSpecification.md)
- - [Error](../Error.md)
- - [ErrorList](../ErrorList.md)
- - [Feed](Feed.md)
- - [FeedDocument](FeedDocument.md)
- - [FeedDocumentEncryptionDetails](FeedDocumentEncryptionDetails.md)
- - [FeedList](FeedList.md)
- - [FeedOptions](FeedOptions.md)
- - [GetFeedDocumentResponse](GetFeedDocumentResponse.md)
- - [GetFeedResponse](GetFeedResponse.md)
- - [GetFeedsResponse](GetFeedsResponse.md)
+ - [CreateFeedDocumentResponse](docs/CreateFeedDocumentResponse.md)
+ - [CreateFeedDocumentSpecification](docs/CreateFeedDocumentSpecification.md)
+ - [CreateFeedResponse](docs/CreateFeedResponse.md)
+ - [CreateFeedSpecification](docs/CreateFeedSpecification.md)
+ - [Error](docs/Error.md)
+ - [ErrorList](docs/ErrorList.md)
+ - [Feed](docs/Feed.md)
+ - [FeedDocument](docs/FeedDocument.md)
+ - [FeedList](docs/FeedList.md)
+ - [FeedOptions](docs/FeedOptions.md)
+ - [GetFeedsResponse](docs/GetFeedsResponse.md)
 
 
 ## Documentation for Authorization

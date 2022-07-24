@@ -30,7 +30,7 @@ import java.io.IOException;
  * A single order item&#39;s buyer information.
  */
 @ApiModel(description = "A single order item's buyer information.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-12-15T20:03:19.199+08:00")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2022-07-24T10:19:26.677+08:00")
 public class OrderItemBuyerInfo {
   @SerializedName("OrderItemId")
   private String orderItemId = null;
@@ -160,7 +160,7 @@ public class OrderItemBuyerInfo {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -201,7 +201,7 @@ public class OrderItemBuyerInfo {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

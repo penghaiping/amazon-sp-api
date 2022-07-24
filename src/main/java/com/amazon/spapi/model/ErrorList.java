@@ -14,30 +14,60 @@
 package com.amazon.spapi.model;
 
 import java.util.Objects;
+import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of error responses returned when a request is unsuccessful.
  */
 @ApiModel(description = "A list of error responses returned when a request is unsuccessful.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-12-15T16:24:23.485+08:00")
-public class ErrorList extends ArrayList<java.lang.Error> {
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2022-07-23T17:46:33.654+08:00")
+public class ErrorList {
+  @SerializedName("errors")
+  private List<Error> errors = new ArrayList<Error>();
+
+  public ErrorList errors(List<Error> errors) {
+    this.errors = errors;
+    return this;
+  }
+
+  public ErrorList addErrorsItem(Error errorsItem) {
+    this.errors.add(errorsItem);
+    return this;
+  }
+
+  /**
+   * Get errors
+   * @return errors
+   **/
+  @ApiModelProperty(required = true, value = "")
+  public List<Error> getErrors() {
+    return errors;
+  }
+
+  public void setErrors(List<Error> errors) {
+    this.errors = errors;
+  }
+
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    return super.equals(o);
+    ErrorList errorList = (ErrorList) o;
+    return Objects.equals(this.errors, errorList.errors);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(super.hashCode());
+    return Objects.hash(errors);
   }
 
 
@@ -45,7 +75,8 @@ public class ErrorList extends ArrayList<java.lang.Error> {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ErrorList {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+
+    sb.append("    errors: ").append(toIndentedString(errors)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -54,7 +85,7 @@ public class ErrorList extends ArrayList<java.lang.Error> {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }

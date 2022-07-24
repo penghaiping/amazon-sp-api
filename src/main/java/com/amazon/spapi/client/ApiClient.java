@@ -13,6 +13,14 @@
 
 package com.amazon.spapi.client;
 
+import com.amazon.spapi.SellingPartnerAPIAA.AWSSigV4Signer;
+import com.amazon.spapi.SellingPartnerAPIAA.LWAAuthorizationSigner;
+import com.amazon.spapi.SellingPartnerAPIAA.RateLimitConfiguration;
+import com.amazon.spapi.auth.ApiKeyAuth;
+import com.amazon.spapi.auth.Authentication;
+import com.amazon.spapi.auth.HttpBasicAuth;
+import com.amazon.spapi.auth.OAuth;
+import com.google.common.util.concurrent.RateLimiter;
 import com.squareup.okhttp.*;
 import com.squareup.okhttp.internal.http.HttpMethod;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
@@ -45,14 +53,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.amazon.spapi.auth.Authentication;
-import com.amazon.spapi.auth.HttpBasicAuth;
-import com.amazon.spapi.auth.ApiKeyAuth;
-import com.amazon.spapi.auth.OAuth;
-
-import com.amazon.spapi.SellingPartnerAPIAA.AWSSigV4Signer;
-import com.amazon.spapi.SellingPartnerAPIAA.LWAAuthorizationSigner;
-
 public class ApiClient {
 
     private String basePath = "https://sellingpartnerapi-na.amazon.com";
@@ -78,6 +78,8 @@ public class ApiClient {
 
     private LWAAuthorizationSigner lwaAuthorizationSigner;
     private AWSSigV4Signer awsSigV4Signer;
+    private RateLimiter rateLimiter;
+    private RateLimitConfiguration rateLimitConfiguration;
 
     /*
      * Constructor for ApiClient
@@ -507,6 +509,23 @@ public class ApiClient {
         this.awsSigV4Signer = awsSigV4Signer;
         return this;
     }
+
+    /**
+     * Sets the RateLimiter
+     * A rate limiter is used to manage a high volume of traffic allowing N requests per second
+     * @return Api client
+     */
+    public ApiClient setRateLimiter(RateLimitConfiguration rateLimitConfiguration) {
+        if (rateLimitConfiguration != null) {
+            rateLimiter = RateLimiter.create(rateLimitConfiguration.getRateLimitPermit());
+
+            //Add rateLimiter to httpclient interceptor for execute
+            RateLimitInterceptor rateLimiterInterceptor = new RateLimitInterceptor(rateLimiter, rateLimitConfiguration);
+            httpClient.interceptors().add(rateLimiterInterceptor);
+        }
+        return this;
+    }
+
 
     /**
      * Format the given parameter object into string.
@@ -987,7 +1006,7 @@ public class ApiClient {
      * @param formParams The form parameters
      * @param authNames The authentications to apply
      * @param progressRequestListener Progress request listener
-     * @return The HTTP request 
+     * @return The HTTP request
      * @throws ApiException If fail to serialize the request body object
      */
     public Request buildRequest(String path, String method, List<Pair> queryParams, List<Pair> collectionQueryParams, Object body, Map<String, String> headerParams, Map<String, Object> formParams, String[] authNames, ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
@@ -1233,148 +1252,30 @@ public class ApiClient {
             throw new AssertionError(e);
         }
     }
+}
 
-    /**
-     * Build HTTP call with the given options.
-     *
-     * @param path The sub-path of the HTTP URL
-     * @param method The request method, one of "GET", "HEAD", "OPTIONS", "POST", "PUT", "PATCH" and "DELETE"
-     * @param queryParams The query parameters
-     * @param body The request body object
-     * @param headerParams The header parameters
-     * @param formParams The form parameters
-     * @param authNames The authentications to apply
-     * @param progressRequestListener Progress request listener
-     * @return The HTTP call
-     * @throws ApiException If fail to serialize the request body object
-     */
-    public Call buildCall(String path, String method, List<Pair> queryParams, Object body, Map<String, String> headerParams, Map<String, Object> formParams, String[] authNames, ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
-        updateParamsForAuth(authNames, queryParams, headerParams);
+class RateLimitInterceptor implements Interceptor {
+    RateLimiter rateLimiter;
+    RateLimitConfiguration rateLimitConfiguration;
 
-        final String url = buildUrl(path, queryParams);
-        final Request.Builder reqBuilder = new Request.Builder().url(url);
-        processHeaderParams(headerParams, reqBuilder);
-
-        String contentType = (String) headerParams.get("Content-Type");
-        // ensuring a default content type
-        if (contentType == null) {
-            contentType = "application/json";
-        }
-
-        RequestBody reqBody;
-        if (!HttpMethod.permitsRequestBody(method)) {
-            reqBody = null;
-        } else if ("application/x-www-form-urlencoded".equals(contentType)) {
-            reqBody = buildRequestBodyFormEncoding(formParams);
-        } else if ("multipart/form-data".equals(contentType)) {
-            reqBody = buildRequestBodyMultipart(formParams);
-        } else if (body == null) {
-            if ("DELETE".equals(method)) {
-                // allow calling DELETE without sending a request body
-                reqBody = null;
-            } else {
-                // use an empty request body (for POST, PUT and PATCH)
-                reqBody = RequestBody.create(MediaType.parse(contentType), "");
-            }
-        } else {
-            reqBody = serialize(body, contentType);
-        }
-
-        Request request = null;
-
-        if(progressRequestListener != null && reqBody != null) {
-            ProgressRequestBody progressRequestBody = new ProgressRequestBody(reqBody, progressRequestListener);
-            request = reqBuilder.method(method, progressRequestBody).build();
-        } else {
-            request = reqBuilder.method(method, reqBody).build();
-        }
-        request = lwaAuthorizationSigner.sign(request);
-        request = awsSigV4Signer.sign(request);
-        return httpClient.newCall(request);
+    public RateLimitInterceptor(RateLimiter rateLimiter, RateLimitConfiguration rateLimitConfiguration) {
+        this.rateLimiter = rateLimiter;
+        this.rateLimitConfiguration = rateLimitConfiguration;
     }
 
-    private String buildUrl(String path, List<Pair> queryParams) {
-        final StringBuilder url = new StringBuilder();
-        url.append(basePath).append(path);
-
-        if (queryParams != null && !queryParams.isEmpty()) {
-            // support (constant) query string in `path`, e.g. "/posts?draft=1"
-            String prefix = path.contains("?") ? "&" : "?";
-            for (Pair param : queryParams) {
-                if (param.getValue() != null) {
-                    if (prefix != null) {
-                        url.append(prefix);
-                        prefix = null;
-                    } else {
-                        url.append("&");
-                    }
-                    String value = parameterToString(param.getValue());
-                    url.append(escapeString(param.getName())).append("=").append(escapeString(value));
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        if (rateLimitConfiguration.getTimeOut() == Long.MAX_VALUE) {
+            rateLimiter.acquire();
+        } else {
+            try {
+                if (!rateLimiter.tryAcquire(rateLimitConfiguration.getTimeOut(), TimeUnit.MILLISECONDS)) {
+                    throw new ApiException("Throttled as per the ratelimiter on client");
                 }
+            } catch (ApiException e) {
+                e.printStackTrace();
             }
         }
-
-        return url.toString();
-    }
-
-    /**
-     * Format to {@code Pair} objects.
-     *
-     * @param collectionFormat collection format (e.g. csv, tsv)
-     * @param name Name
-     * @param value Value
-     * @return A list of Pair objects
-     */
-    public List<Pair> parameterToPairs(String collectionFormat, String name, Object value){
-        List<Pair> params = new ArrayList<Pair>();
-
-        // preconditions
-        if (name == null || name.isEmpty() || value == null) return params;
-
-        Collection valueCollection = null;
-        if (value instanceof Collection) {
-            valueCollection = (Collection) value;
-        } else {
-            params.add(new Pair(name, parameterToString(value)));
-            return params;
-        }
-
-        if (valueCollection.isEmpty()){
-            return params;
-        }
-
-        // get the collection format
-        collectionFormat = (collectionFormat == null || collectionFormat.isEmpty() ? "csv" : collectionFormat); // default: csv
-
-        // create the params based on the collection format
-        if (collectionFormat.equals("multi")) {
-            for (Object item : valueCollection) {
-                params.add(new Pair(name, parameterToString(item)));
-            }
-
-            return params;
-        }
-
-        String delimiter = ",";
-
-        if (collectionFormat.equals("csv")) {
-            delimiter = ",";
-        } else if (collectionFormat.equals("ssv")) {
-            delimiter = " ";
-        } else if (collectionFormat.equals("tsv")) {
-            delimiter = "\t";
-        } else if (collectionFormat.equals("pipes")) {
-            delimiter = "|";
-        }
-
-        StringBuilder sb = new StringBuilder() ;
-        for (Object item : valueCollection) {
-            sb.append(delimiter);
-            sb.append(parameterToString(item));
-        }
-
-        params.add(new Pair(name, sb.substring(1)));
-
-        return params;
+        return chain.proceed(chain.request());
     }
 }

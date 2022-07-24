@@ -4,31 +4,32 @@ All URIs are relative to *https://sellingpartnerapi-na.amazon.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getCatalogItem**](CatalogApi.md#getCatalogItem) | **GET** /catalog/v0/items/{asin} | 
-[**listCatalogCategories**](CatalogApi.md#listCatalogCategories) | **GET** /catalog/v0/categories | 
-[**listCatalogItems**](CatalogApi.md#listCatalogItems) | **GET** /catalog/v0/items | 
+[**getCatalogItem**](CatalogApi.md#getCatalogItem) | **GET** /catalog/2022-04-01/items/{asin} | 
+[**searchCatalogItems**](CatalogApi.md#searchCatalogItems) | **GET** /catalog/2022-04-01/items | 
 
 
 <a name="getCatalogItem"></a>
 # **getCatalogItem**
-> GetCatalogItemResponse getCatalogItem(marketplaceId, asin)
+> Item getCatalogItem(asin, marketplaceIds, includedData, locale)
 
 
 
-Returns a specified item and its attributes.  **Usage Plan:**  | Rate (requests per second) | Burst | | ---- | ---- | | 1 | 1 |  For more information, see \&quot;Usage Plans and Rate Limits\&quot; in the Selling Partner API documentation.
+Retrieves details for an item in the Amazon catalog.  **Usage Plan:**  | Rate (requests per second) | Burst | | ---- | ---- | | 5 | 5 |  The &#x60;x-amzn-RateLimit-Limit&#x60; response header returns the usage plan rate limits that were applied to the requested operation, when available. The table above indicates the default rate and burst values for this operation. Selling partners whose business demands require higher throughput may observe higher rate and burst values than those shown here. For more information, refer to the [Usage Plans and Rate Limits in the Selling Partner API](doc:usage-plans-and-rate-limits-in-the-sp-api).
 
 ### Example
 ```java
 // Import classes:
-//import com.amazon.spapi.catalogitems.ApiException;
-//import com.amazon.spapi.catalogitems.api.CatalogApi;
+//import com.amazon.spapi.ApiException;
+//import com.amazon.spapi.api.CatalogApi;
 
 
 CatalogApi apiInstance = new CatalogApi();
-String marketplaceId = "marketplaceId_example"; // String | A marketplace identifier. Specifies the marketplace for the item.
 String asin = "asin_example"; // String | The Amazon Standard Identification Number (ASIN) of the item.
+List<String> marketplaceIds = Arrays.asList("ATVPDKIKX0DER"); // List<String> | A comma-delimited list of Amazon marketplace identifiers. Data sets in the response contain data only for the specified marketplaces.
+List<String> includedData = Arrays.asList("[\"summaries\"]"); // List<String> | A comma-delimited list of data sets to include in the response. Default: `summaries`.
+String locale = "en_US"; // String | Locale for retrieving localized summaries. Defaults to the primary locale of the marketplace.
 try {
-    GetCatalogItemResponse result = apiInstance.getCatalogItem(marketplaceId, asin);
+    Item result = apiInstance.getCatalogItem(asin, marketplaceIds, includedData, locale);
     System.out.println(result);
 } catch (ApiException e) {
     System.err.println("Exception when calling CatalogApi#getCatalogItem");
@@ -40,12 +41,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **marketplaceId** | **String**| A marketplace identifier. Specifies the marketplace for the item. |
  **asin** | **String**| The Amazon Standard Identification Number (ASIN) of the item. |
+ **marketplaceIds** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of Amazon marketplace identifiers. Data sets in the response contain data only for the specified marketplaces. |
+ **includedData** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of data sets to include in the response. Default: &#x60;summaries&#x60;. | [optional] [default to [&quot;summaries&quot;]] [enum: attributes, dimensions, identifiers, images, productTypes, relationships, salesRanks, summaries, vendorDetails]
+ **locale** | **String**| Locale for retrieving localized summaries. Defaults to the primary locale of the marketplace. | [optional]
 
 ### Return type
 
-[**GetCatalogItemResponse**](GetCatalogItemResponse.md)
+[**Item**](Item.md)
 
 ### Authorization
 
@@ -56,30 +59,39 @@ No authorization required
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="listCatalogCategories"></a>
-# **listCatalogCategories**
-> ListCatalogCategoriesResponse listCatalogCategories(marketplaceId, ASIN, sellerSKU)
+<a name="searchCatalogItems"></a>
+# **searchCatalogItems**
+> ItemSearchResults searchCatalogItems(marketplaceIds, identifiers, identifiersType, includedData, locale, sellerId, keywords, brandNames, classificationIds, pageSize, pageToken, keywordsLocale)
 
 
 
-Returns the parent categories to which an item belongs, based on the specified ASIN or SellerSKU.  **Usage Plan:**  | Rate (requests per second) | Burst | | ---- | ---- | | 1 | 1 |  For more information, see \&quot;Usage Plans and Rate Limits\&quot; in the Selling Partner API documentation.
+Search for and return a list of Amazon catalog items and associated information either by identifier or by keywords.  **Usage Plans:**  | Rate (requests per second) | Burst | | ---- | ---- | | 5 | 5 |  The &#x60;x-amzn-RateLimit-Limit&#x60; response header returns the usage plan rate limits that were applied to the requested operation, when available. The table above indicates the default rate and burst values for this operation. Selling partners whose business demands require higher throughput may observe higher rate and burst values than those shown here. For more information, refer to the [Usage Plans and Rate Limits in the Selling Partner API](doc:usage-plans-and-rate-limits-in-the-sp-api).
 
 ### Example
 ```java
 // Import classes:
-//import com.amazon.spapi.catalogitems.ApiException;
-//import com.amazon.spapi.catalogitems.api.CatalogApi;
+//import com.amazon.spapi.ApiException;
+//import com.amazon.spapi.api.CatalogApi;
 
 
 CatalogApi apiInstance = new CatalogApi();
-String marketplaceId = "marketplaceId_example"; // String | A marketplace identifier. Specifies the marketplace for the item.
-String ASIN = "ASIN_example"; // String | The Amazon Standard Identification Number (ASIN) of the item.
-String sellerSKU = "sellerSKU_example"; // String | Used to identify items in the given marketplace. SellerSKU is qualified by the seller's SellerId, which is included with every operation that you submit.
+List<String> marketplaceIds = Arrays.asList("ATVPDKIKX0DER"); // List<String> | A comma-delimited list of Amazon marketplace identifiers for the request.
+List<String> identifiers = Arrays.asList("shoes"); // List<String> | A comma-delimited list of product identifiers to search the Amazon catalog for. **Note:** Cannot be used with `keywords`.
+String identifiersType = "ASIN"; // String | Type of product identifiers to search the Amazon catalog for. **Note:** Required when `identifiers` are provided.
+List<String> includedData = Arrays.asList("[\"summaries\"]"); // List<String> | A comma-delimited list of data sets to include in the response. Default: `summaries`.
+String locale = "en_US"; // String | Locale for retrieving localized summaries. Defaults to the primary locale of the marketplace.
+String sellerId = "sellerId_example"; // String | A selling partner identifier, such as a seller account or vendor code. **Note:** Required when `identifiersType` is `SKU`.
+List<String> keywords = Arrays.asList("shoes"); // List<String> | A comma-delimited list of words to search the Amazon catalog for. **Note:** Cannot be used with `identifiers`.
+List<String> brandNames = Arrays.asList("Beautiful Boats"); // List<String> | A comma-delimited list of brand names to limit the search for `keywords`-based queries. **Note:** Cannot be used with `identifiers`.
+List<String> classificationIds = Arrays.asList("12345678"); // List<String> | A comma-delimited list of classification identifiers to limit the search for `keywords`-based queries. **Note:** Cannot be used with `identifiers`.
+Integer pageSize = 10; // Integer | Number of results to be returned per page.
+String pageToken = "sdlkj234lkj234lksjdflkjwdflkjsfdlkj234234234234"; // String | A token to fetch a certain page when there are multiple pages worth of results.
+String keywordsLocale = "en_US"; // String | The language of the keywords provided for `keywords`-based queries. Defaults to the primary locale of the marketplace. **Note:** Cannot be used with `identifiers`.
 try {
-    ListCatalogCategoriesResponse result = apiInstance.listCatalogCategories(marketplaceId, ASIN, sellerSKU);
+    ItemSearchResults result = apiInstance.searchCatalogItems(marketplaceIds, identifiers, identifiersType, includedData, locale, sellerId, keywords, brandNames, classificationIds, pageSize, pageToken, keywordsLocale);
     System.out.println(result);
 } catch (ApiException e) {
-    System.err.println("Exception when calling CatalogApi#listCatalogCategories");
+    System.err.println("Exception when calling CatalogApi#searchCatalogItems");
     e.printStackTrace();
 }
 ```
@@ -88,72 +100,22 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **marketplaceId** | **String**| A marketplace identifier. Specifies the marketplace for the item. |
- **ASIN** | **String**| The Amazon Standard Identification Number (ASIN) of the item. | [optional]
- **sellerSKU** | **String**| Used to identify items in the given marketplace. SellerSKU is qualified by the seller&#39;s SellerId, which is included with every operation that you submit. | [optional]
+ **marketplaceIds** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of Amazon marketplace identifiers for the request. |
+ **identifiers** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of product identifiers to search the Amazon catalog for. **Note:** Cannot be used with &#x60;keywords&#x60;. | [optional]
+ **identifiersType** | **String**| Type of product identifiers to search the Amazon catalog for. **Note:** Required when &#x60;identifiers&#x60; are provided. | [optional] [enum: ASIN, EAN, GTIN, ISBN, JAN, MINSAN, SKU, UPC]
+ **includedData** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of data sets to include in the response. Default: &#x60;summaries&#x60;. | [optional] [default to [&quot;summaries&quot;]] [enum: attributes, dimensions, identifiers, images, productTypes, relationships, salesRanks, summaries, vendorDetails]
+ **locale** | **String**| Locale for retrieving localized summaries. Defaults to the primary locale of the marketplace. | [optional]
+ **sellerId** | **String**| A selling partner identifier, such as a seller account or vendor code. **Note:** Required when &#x60;identifiersType&#x60; is &#x60;SKU&#x60;. | [optional]
+ **keywords** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of words to search the Amazon catalog for. **Note:** Cannot be used with &#x60;identifiers&#x60;. | [optional]
+ **brandNames** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of brand names to limit the search for &#x60;keywords&#x60;-based queries. **Note:** Cannot be used with &#x60;identifiers&#x60;. | [optional]
+ **classificationIds** | [**List&lt;String&gt;**](String.md)| A comma-delimited list of classification identifiers to limit the search for &#x60;keywords&#x60;-based queries. **Note:** Cannot be used with &#x60;identifiers&#x60;. | [optional]
+ **pageSize** | **Integer**| Number of results to be returned per page. | [optional] [default to 10]
+ **pageToken** | **String**| A token to fetch a certain page when there are multiple pages worth of results. | [optional]
+ **keywordsLocale** | **String**| The language of the keywords provided for &#x60;keywords&#x60;-based queries. Defaults to the primary locale of the marketplace. **Note:** Cannot be used with &#x60;identifiers&#x60;. | [optional]
 
 ### Return type
 
-[**ListCatalogCategoriesResponse**](ListCatalogCategoriesResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-<a name="listCatalogItems"></a>
-# **listCatalogItems**
-> ListCatalogItemsResponse listCatalogItems(marketplaceId, query, queryContextId, sellerSKU, UPC, EAN, ISBN, JAN)
-
-
-
-Returns a list of items and their attributes, based on a search query or item identifiers that you specify. When based on a search query, provide the Query parameter and optionally, the QueryContextId parameter. When based on item identifiers, provide a single appropriate parameter based on the identifier type, and specify the associated item value. MarketplaceId is always required.  **Usage Plan:**  | Rate (requests per second) | Burst | | ---- | ---- | | 1 | 1 |  For more information, see \&quot;Usage Plans and Rate Limits\&quot; in the Selling Partner API documentation.
-
-### Example
-```java
-// Import classes:
-//import com.amazon.spapi.catalogitems.ApiException;
-//import com.amazon.spapi.catalogitems.api.CatalogApi;
-
-
-CatalogApi apiInstance = new CatalogApi();
-String marketplaceId = "marketplaceId_example"; // String | A marketplace identifier. Specifies the marketplace for which items are returned.
-String query = "query_example"; // String | Keyword(s) to use to search for items in the catalog. Example: 'harry potter books'.
-String queryContextId = "queryContextId_example"; // String | An identifier for the context within which the given search will be performed. A marketplace might provide mechanisms for constraining a search to a subset of potential items. For example, the retail marketplace allows queries to be constrained to a specific category. The QueryContextId parameter specifies such a subset. If it is omitted, the search will be performed using the default context for the marketplace, which will typically contain the largest set of items.
-String sellerSKU = "sellerSKU_example"; // String | Used to identify an item in the given marketplace. SellerSKU is qualified by the seller's SellerId, which is included with every operation that you submit.
-String UPC = "UPC_example"; // String | A 12-digit bar code used for retail packaging.
-String EAN = "EAN_example"; // String | A European article number that uniquely identifies the catalog item, manufacturer, and its attributes.
-String ISBN = "ISBN_example"; // String | The unique commercial book identifier used to identify books internationally.
-String JAN = "JAN_example"; // String | A Japanese article number that uniquely identifies the product, manufacturer, and its attributes.
-try {
-    ListCatalogItemsResponse result = apiInstance.listCatalogItems(marketplaceId, query, queryContextId, sellerSKU, UPC, EAN, ISBN, JAN);
-    System.out.println(result);
-} catch (ApiException e) {
-    System.err.println("Exception when calling CatalogApi#listCatalogItems");
-    e.printStackTrace();
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **marketplaceId** | **String**| A marketplace identifier. Specifies the marketplace for which items are returned. |
- **query** | **String**| Keyword(s) to use to search for items in the catalog. Example: &#39;harry potter books&#39;. | [optional]
- **queryContextId** | **String**| An identifier for the context within which the given search will be performed. A marketplace might provide mechanisms for constraining a search to a subset of potential items. For example, the retail marketplace allows queries to be constrained to a specific category. The QueryContextId parameter specifies such a subset. If it is omitted, the search will be performed using the default context for the marketplace, which will typically contain the largest set of items. | [optional]
- **sellerSKU** | **String**| Used to identify an item in the given marketplace. SellerSKU is qualified by the seller&#39;s SellerId, which is included with every operation that you submit. | [optional]
- **UPC** | **String**| A 12-digit bar code used for retail packaging. | [optional]
- **EAN** | **String**| A European article number that uniquely identifies the catalog item, manufacturer, and its attributes. | [optional]
- **ISBN** | **String**| The unique commercial book identifier used to identify books internationally. | [optional]
- **JAN** | **String**| A Japanese article number that uniquely identifies the product, manufacturer, and its attributes. | [optional]
-
-### Return type
-
-[**ListCatalogItemsResponse**](ListCatalogItemsResponse.md)
+[**ItemSearchResults**](ItemSearchResults.md)
 
 ### Authorization
 

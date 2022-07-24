@@ -33,8 +33,11 @@ Name | Type | Description | Notes
 **taxCollection** | [**TaxCollection**](TaxCollection.md) | Information about withheld taxes. |  [optional]
 **serialNumberRequired** | **Boolean** | When true, the product type for this item has a serial number.  Returned only for Amazon Easy Ship orders. |  [optional]
 **isTransparency** | **Boolean** | When true, transparency codes are required. |  [optional]
-**iossNumber** | **String** | The IOSS number of the seller. Sellers selling in the EU will be assigned a unique IOSS number that must be listed on all packages sent to the EU. |  [optional]
+**iossNumber** | **String** | The IOSS number for the marketplace. Sellers shipping to the European Union (EU) from outside of the EU must provide this IOSS number to their carrier when Amazon has collected the VAT on the sale. |  [optional]
+**storeChainStoreId** | **String** | The store chain store identifier. Linked to a specific store in a store chain. |  [optional]
 **deemedResellerCategory** | [**DeemedResellerCategoryEnum**](#DeemedResellerCategoryEnum) | The category of deemed reseller. This applies to selling partners that are not based in the EU and is used to help them meet the VAT Deemed Reseller tax laws in the EU and UK. |  [optional]
+**buyerInfo** | [**ItemBuyerInfo**](ItemBuyerInfo.md) |  |  [optional]
+**buyerRequestedCancel** | [**BuyerRequestedCancel**](BuyerRequestedCancel.md) | Information about whether or not a buyer requested cancellation. |  [optional]
 
 
 <a name="DeemedResellerCategoryEnum"></a>

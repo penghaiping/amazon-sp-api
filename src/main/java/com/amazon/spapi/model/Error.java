@@ -19,10 +19,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Error response returned when the request is unsuccessful.
+ * An error response returned when the request is unsuccessful.
  */
-@ApiModel(description = "Error response returned when the request is unsuccessful.")
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-12-15T16:24:23.485+08:00")
+@ApiModel(description = "An error response returned when the request is unsuccessful.")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2022-07-23T17:46:33.654+08:00")
 public class Error {
   @SerializedName("code")
   private String code = null;
@@ -38,10 +38,10 @@ public class Error {
     return this;
   }
 
-   /**
+  /**
    * An error code that identifies the type of error that occurred.
    * @return code
-  **/
+   **/
   @ApiModelProperty(required = true, value = "An error code that identifies the type of error that occurred.")
   public String getCode() {
     return code;
@@ -56,10 +56,10 @@ public class Error {
     return this;
   }
 
-   /**
+  /**
    * A message that describes the error condition in a human-readable form.
    * @return message
-  **/
+   **/
   @ApiModelProperty(required = true, value = "A message that describes the error condition in a human-readable form.")
   public String getMessage() {
     return message;
@@ -74,10 +74,10 @@ public class Error {
     return this;
   }
 
-   /**
+  /**
    * Additional details that can help the caller understand or fix the issue.
    * @return details
-  **/
+   **/
   @ApiModelProperty(value = "Additional details that can help the caller understand or fix the issue.")
   public String getDetails() {
     return details;
@@ -89,7 +89,7 @@ public class Error {
 
 
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -98,8 +98,8 @@ public class Error {
     }
     Error error = (Error) o;
     return Objects.equals(this.code, error.code) &&
-        Objects.equals(this.message, error.message) &&
-        Objects.equals(this.details, error.details);
+            Objects.equals(this.message, error.message) &&
+            Objects.equals(this.details, error.details);
   }
 
   @Override
@@ -112,7 +112,7 @@ public class Error {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Error {\n");
-    
+
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    details: ").append(toIndentedString(details)).append("\n");
@@ -124,7 +124,7 @@ public class Error {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(Object o) {
+  private String toIndentedString(java.lang.Object o) {
     if (o == null) {
       return "null";
     }
@@ -132,4 +132,3 @@ public class Error {
   }
 
 }
-
